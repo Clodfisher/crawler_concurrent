@@ -14,9 +14,10 @@
 
 * 获取并打印第一页用户的信息信息。  
   需要安装用于网页字符转换的库：    
-  ```
-  
-  ```
+```
+gopm get -g -v golang.org/x/text    
+gopm 
+```
 
 
 
@@ -28,7 +29,7 @@ gopm 代替go 下载第三方依赖包
 可以采用gopm从golang.org一些镜像网站上下载。    
 1. 安装gopm    
 ```
-go get -u github.com/gpmgo/gopm
+go get -u -v github.com/gpmgo/gopm
 执行该命令的用户需要设置GOPATH参数
 ```
 2. gopm get 如果不携带-g采用，会把依赖包下载.vendor目录下面。    
@@ -36,3 +37,4 @@ go get -u github.com/gpmgo/gopm
 采用-g 参数，可以把依赖包下载到GOPATH目录中 
 gopm get -g golang.org/x/net   
 ```
+或参考：[go get golang.org/x 包失败解决方法](https://blog.csdn.net/alexwoo0501/article/details/73409917)
