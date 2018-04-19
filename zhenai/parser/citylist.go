@@ -13,12 +13,12 @@ func CityListParser(contents []byte) engine.ParserResult {
 	result := engine.ParserResult{}
 	for _, m := range matches {
 		//城市的名字
-		result.ItemSlice = append(result.ItemSlice, string(m[2]))
+		result.ItemSlice = append(result.ItemSlice, "City "+string(m[2]))
 
 		//城市的最新请求
 		cityRequest := engine.Request{
 			Url:        string(m[1]),
-			ParserFunc: engine.NilParser,
+			ParserFunc: CityParser,
 		}
 		result.RequestSlice = append(result.RequestSlice, cityRequest)
 	}

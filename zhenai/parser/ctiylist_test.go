@@ -1,8 +1,6 @@
 package parser
 
 import (
-	"fmt"
-	_ "github.com/Clodfisher/crawler_concurrent/fetcher"
 	"io/ioutil"
 	"testing"
 )
@@ -13,6 +11,24 @@ func TestCityListParser(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
+	parserResult := CityListParser(contents)
 
-	fmt.Printf("%s\n", contents)
+	const resultSize = 470
+	expectUrl := []string{
+		"http://www.zhenai.com/zhenghun/aba",
+		"http://www.zhenai.com/zhenghun/akesu",
+		"http://www.zhenai.com/zhenghun/alashanmeng",
+	}
+
+	if len(parserResult.RequestSlice) != resultSize {
+		t.Errorf("result should have %d request, but had %d",
+			resultSize, len(parserResult.RequestSlice))
+	}
+	for i, url := range expectUrl {
+		if parserResult.RequestSlice[i].Url != url {
+			t.Errorf("expected url #%d: %s;but was %s",
+				i, url, parserResult.RequestSlice[i].Url)
+		}
+
+	}
 }
