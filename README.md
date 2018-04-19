@@ -41,7 +41,11 @@ get -g -v golang.org/x/net
   ![整体架构images0](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images0.jpg)     
 
 * 对城市列表解析进行测试      
-  测试方法：采用表格驱动的方法
+  测试方法：采用表格驱动的方法    
+
+* 对于城市列表中的每个城市URL进行解析，获取到用户名和用户URL        
+
+* 用户信息进行解析    
 
 
 ### 知识点    
@@ -61,8 +65,9 @@ go get -u -v github.com/gpmgo/gopm
 gopm get -g golang.org/x/net   
 ```
 
+或参考：[go get golang.org/x 包失败解决方法](https://blog.csdn.net/alexwoo0501/article/details/73409917)
+
 **正则表达式的基本使用**    
 
 主要包括正则表达式的匹配，以及将匹配串中需要的子串提取出来。
 
-或参考：[go get golang.org/x 包失败解决方法](https://blog.csdn.net/alexwoo0501/article/details/73409917)
