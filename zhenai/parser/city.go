@@ -13,12 +13,15 @@ func CityParser(contents []byte) engine.ParserResult {
 	result := engine.ParserResult{}
 	for _, m := range matches {
 		//用户的名字
-		result.ItemSlice = append(result.ItemSlice, "User "+string(m[2]))
+		name := string(m[2])
+		result.ItemSlice = append(result.ItemSlice, "User "+name)
 
 		//用户的最新请求
 		userRequest := engine.Request{
-			Url:        string(m[1]),
-			ParserFunc: engine.NilParser,
+			Url: string(m[1]),
+			ParserFunc: func(contents []byte) engine.ParserResult {
+				return ProfileParser(contents, name)
+			},
 		}
 		result.RequestSlice = append(result.RequestSlice, userRequest)
 	}

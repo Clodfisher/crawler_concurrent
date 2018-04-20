@@ -11,6 +11,7 @@ func CityListParser(contents []byte) engine.ParserResult {
 	re := regexp.MustCompile(RegexpCityList)
 	matches := re.FindAllSubmatch(contents, -1)
 	result := engine.ParserResult{}
+	limit := 10
 	for _, m := range matches {
 		//城市的名字
 		result.ItemSlice = append(result.ItemSlice, "City "+string(m[2]))
@@ -21,6 +22,11 @@ func CityListParser(contents []byte) engine.ParserResult {
 			ParserFunc: CityParser,
 		}
 		result.RequestSlice = append(result.RequestSlice, cityRequest)
+
+		limit--
+		if limit == 0 {
+			break
+		}
 	}
 
 	return result

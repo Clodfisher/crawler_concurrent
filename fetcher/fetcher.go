@@ -10,11 +10,17 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	_ "time"
 )
 
 //从Internet获取到网站内容text
 func Fetch(url string) ([]byte, error) {
-	resp, err := http.Get(url)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	req.Header.Add("User-Agent",
+		`Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11`)
+	resp, err := client.Do(req)
+	//	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
