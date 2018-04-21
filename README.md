@@ -57,6 +57,13 @@ get -g -v golang.org/x/net
 针对上述存在的性能问题，可以将从网页获取数据代码异步化。而对于解析器（parser）,是从本地获取数据，不存在性能问题，但是没获取到一个网页内容都要进行解析，因此可以将获取网页内容（fetcher)和parser合并成一个work动作函数，进行真正网页与数据的处理。可将上述流程图，修改成如下图所示：    
 ![将fetcher和parser合并成一个work动作images1](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images1.jpg)         
 
+* 构建一个调度程序（Scheduler）
+  Schedule用于分发request到多个worker中，从而实现多对多的关系。其架构图如下所示：
+![构建一个调度程序](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images2.jpg)   
+注： 其中每个线表示一个chanal;每个方框表示一个goroute；Request表示多个请求   
+
+* Schedule中实现所有的Worker公用一个输入          
+
    
 
 

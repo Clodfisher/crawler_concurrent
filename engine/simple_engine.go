@@ -5,7 +5,10 @@ import (
 	"log"
 )
 
-func Run(seed ...Request) {
+type SimpleEngine struct {
+}
+
+func (se SimpleEngine) Run(seed ...Request) {
 	var requestSlice []Request
 	for _, r := range seed {
 		requestSlice = append(requestSlice, r)
@@ -17,7 +20,7 @@ func Run(seed ...Request) {
 		r := requestSlice[0]
 		requestSlice = requestSlice[1:]
 
-		parserResult, err := worker(&r)
+		parserResult, err := se.worker(&r)
 		if err != nil {
 			continue
 		}
@@ -30,7 +33,7 @@ func Run(seed ...Request) {
 
 }
 
-func worker(r *Request) (ParserResult, error) {
+func (se SimpleEngine) worker(r *Request) (ParserResult, error) {
 	//将请求递交给fetch获取网页内容text
 	log.Printf("Fetching Url: %s", r.Url)
 	contents, err := fetcher.Fetch(r.Url)
