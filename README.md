@@ -47,6 +47,18 @@ get -g -v golang.org/x/net
 
 * 用户信息进行解析    
 
+* 分析单任务版本爬虫存在的性能问题    
+  对于单任务版本，其对于互谅网上获取网页数据耗时比较到，而此时整个程序需要再次等待，当完全获取到数据后才能继续执行，所以可以将此处进行并发处理，异步化。   
+
+**并发版本**    
+以下表述的是实现的过程：    
+
+* 将fetcher和parser合并成一个work动作    
+针对上述存在的性能问题，可以将从网页获取数据代码异步化。而对于解析器（parser）,是从本地获取数据，不存在性能问题，但是没获取到一个网页内容都要进行解析，因此可以将获取网页内容（fetcher)和parser合并成一个work动作函数，进行真正网页与数据的处理。可将上述流程图，修改成如下图所示：    
+![将fetcher和parser合并成一个work动作images1](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images1.jpg)         
+
+   
+
 
 ### 知识点    
 
