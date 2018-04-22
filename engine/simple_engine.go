@@ -20,7 +20,7 @@ func (se SimpleEngine) Run(seed ...Request) {
 		r := requestSlice[0]
 		requestSlice = requestSlice[1:]
 
-		parserResult, err := se.worker(&r)
+		parserResult, err := worker(&r)
 		if err != nil {
 			continue
 		}
@@ -33,7 +33,7 @@ func (se SimpleEngine) Run(seed ...Request) {
 
 }
 
-func (se SimpleEngine) worker(r *Request) (ParserResult, error) {
+func worker(r *Request) (ParserResult, error) {
 	//将请求递交给fetch获取网页内容text
 	log.Printf("Fetching Url: %s", r.Url)
 	contents, err := fetcher.Fetch(r.Url)
