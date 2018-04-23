@@ -10,11 +10,15 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 	_ "time"
 )
 
+var rateLimiter = time.Tick(10 * time.Millisecond)
+
 //从Internet获取到网站内容text
 func Fetch(url string) ([]byte, error) {
+	<-rateLimiter
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	req.Header.Add("User-Agent",

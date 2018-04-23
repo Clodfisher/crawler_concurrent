@@ -62,7 +62,19 @@ get -g -v golang.org/x/net
 ![构建一个调度程序](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images2.jpg)   
 注： 其中每个线表示一个chanal;每个方框表示一个goroute；Request表示多个请求   
 
-* Schedule中实现所有的Worker公用一个输入          
+* Schedule中实现所有的Worker共用一个输入       
+![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images3.jpg)   
+  这种情况下会出现一个问题，就是锁死chan。    
+
+* 实现Scheduler为每个Request创建一个goroutine      
+  主要功能是为每个Request创建一个goroutine，每个goroutine只做一件事情，往worker同一队列分发request。其缺点是控制力比较小，无法控制goroutine，以及无法控制request给那个worker，对于负载均衡无法实现。实现过程如下图所示：    
+![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images4.jpg)      
+注：goroutine是与Request数量对等，与worker的数量不对等。    
+
+* Schedule自己实现request的分发
+  在Schedule中实现Request队列和Worker队列，Request队列用于存储从Schedule过来的Request，Worker队列用于存储worker，Schedule从Request队列获取相应的Request，交给从Worker队列获取的相应worker，从而实现对request和worker的控制，达到分发的目的。其实现过程如下图所示：    
+![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images4.jpg)      
+   
 
    
 
