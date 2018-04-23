@@ -73,7 +73,7 @@ get -g -v golang.org/x/net
 
 * Schedule自己实现request的分发
   在Schedule中实现Request队列和Worker队列，Request队列用于存储从Schedule过来的Request，Worker队列用于存储worker，Schedule从Request队列获取相应的Request，交给从Worker队列获取的相应worker，从而实现对request和worker的控制，达到分发的目的。其实现过程如下图所示：    
-![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images4.jpg)      
+![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images5.jpg)      
    
 
    
