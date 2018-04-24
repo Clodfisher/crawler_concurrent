@@ -64,7 +64,7 @@ get -g -v golang.org/x/net
 
 * Schedule中实现所有的Worker共用一个输入       
 ![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images3.jpg)   
-  这种情况下会出现一个问题，就是锁死chan。    
+  这种情况下会出现一个问题，就是锁死chan，原因是循环等待导致。    
 
 * 实现Scheduler为每个Request创建一个goroutine      
   主要功能是为每个Request创建一个goroutine，每个goroutine只做一件事情，往worker同一队列分发request。其缺点是控制力比较小，无法控制goroutine，以及无法控制request给那个worker，对于负载均衡无法实现。实现过程如下图所示：    
