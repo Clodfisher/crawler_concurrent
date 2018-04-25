@@ -6,8 +6,15 @@ type SimpleScheduler struct {
 	workerChan chan engine.Request
 }
 
-func (ss *SimpleScheduler) ConfigMasterWorkerChan(c chan engine.Request) {
-	ss.workerChan = c
+func (ss *SimpleScheduler) WorkerChan() chan engine.Request {
+	return ss.workerChan
+}
+
+func (ss *SimpleScheduler) WorkerReady(chan engine.Request) {
+}
+
+func (ss *SimpleScheduler) Run() {
+	ss.workerChan = make(chan engine.Request)
 }
 
 func (ss *SimpleScheduler) Submit(r engine.Request) {

@@ -10,10 +10,15 @@ type ConcurrentEngine struct {
 }
 
 type Scheduler interface {
+	ReadyNotifier
 	Submit(Request)
-	ConfigMasterWorkerChan(chan Request)
-	WorkerReady(chan Request)
+	//我有个worker请问给我那个chan
+	WorkerChan() chan Request
 	Run()
+}
+
+type ReadyNotifier interface {
+	WorkerReady(chan Request)
 }
 
 func (ce *ConcurrentEngine) Run(seed ...Request) {
@@ -21,7 +26,7 @@ func (ce *ConcurrentEngine) Run(seed ...Request) {
 	ce.SchedulerInterface.Run()
 
 	for i := 0; i < ce.WorkerCount; i++ {
-		createWorker(out, ce.SchedulerInterface)
+		createWorker(ce.SchedulerInterface.WorkerChan(), out, ce.SchedulerInterface)
 	}
 
 	for _, r := range seed {
@@ -42,12 +47,12 @@ func (ce *ConcurrentEngine) Run(seed ...Request) {
 	}
 }
 
-func createWorker(out chan ParserResult, s Scheduler) {
+func createWorker(in chan Request, out chan ParserResult, ready ReadyNotifier) {
 	//每个worker都有一个自己的chanal，就自己告诉自己
-	in := make(chan Request)
+	//in := make(chan Request)
 	go func() {
 		for {
-			s.WorkerReady(in)
+			ready.WorkerReady(in)
 			request := <-in
 			result, err := worker(&request)
 			if err != nil {

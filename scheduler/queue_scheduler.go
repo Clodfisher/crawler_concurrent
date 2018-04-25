@@ -8,16 +8,17 @@ type QueuedScheduler struct {
 	workerChan chan chan engine.Request
 }
 
+func (qs *QueuedScheduler) WorkerChan() chan engine.Request {
+	//每个worker都有一个自己的chan
+	return make(chan engine.Request)
+}
+
 func (qs *QueuedScheduler) Submit(r engine.Request) {
 	qs.requestChan <- r
 }
 
 func (qs *QueuedScheduler) WorkerReady(w chan engine.Request) {
 	qs.workerChan <- w
-}
-
-func (qs *QueuedScheduler) ConfigMasterWorkerChan(chan engine.Request) {
-	panic("implement me")
 }
 
 /*
