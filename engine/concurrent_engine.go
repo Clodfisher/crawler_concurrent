@@ -31,7 +31,7 @@ func (ce *ConcurrentEngine) Run(seed ...Request) {
 
 	for _, r := range seed {
 		if isDuplicate(r.Url) {
-			log.Printf("Duplicate request: %s", r.Url)
+			//log.Printf("Duplicate request: %s", r.Url)
 			continue
 		}
 		ce.SchedulerInterface.Submit(r)
@@ -74,13 +74,9 @@ func createWorker(in chan Request, out chan ParserResult, ready ReadyNotifier) {
 var visitedUrls = make(map[string]bool)
 
 func isDuplicate(url string) bool {
-
-	log.Printf("visitedUrls[url]: %v", visitedUrls[url])
 	if visitedUrls[url] {
-		log.Printf("true  Duplicate request: %s", url)
 		return true
 	}
 	visitedUrls[url] = true
-	log.Printf("false   Duplicate request: %s", url)
 	return false
 }

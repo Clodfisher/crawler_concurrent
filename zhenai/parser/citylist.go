@@ -12,8 +12,8 @@ func CityListParser(contents []byte) engine.ParserResult {
 	matches := re.FindAllSubmatch(contents, -1)
 	result := engine.ParserResult{}
 	for _, m := range matches {
-		//城市的名字
-		result.ItemSlice = append(result.ItemSlice, "City "+string(m[2]))
+		//城市的名字,item用于存储，因此只保存有用的profile数据
+		//result.ItemSlice = append(result.ItemSlice, "City "+string(m[2]))
 
 		//城市的最新请求
 		cityRequest := engine.Request{
