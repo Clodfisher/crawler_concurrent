@@ -75,6 +75,8 @@ get -g -v golang.org/x/net
   在Schedule中实现Request队列和Worker队列，Request队列用于存储从Schedule过来的Request，Worker队列用于存储worker，Schedule从Request队列获取相应的Request，交给从Worker队列获取的相应worker，从而实现对request和worker的控制，达到分发的目的。其实现过程如下图所示：    
 ![所有的Worker共用一个输入](https://github.com/Clodfisher/crawler_concurrent/raw/master/readmeimages/images5.jpg)      
    
+* 采用ElasticSearch快速存储、搜素、分析数据    
+  为每个Item创建goroutine，提交给ItemSave，采用Docker进行ElasticSearch的安装，实现对爬取数据的快速存储、搜素、数据分析等功能。    
 
    
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/Clodfisher/crawler_concurrent/engine"
+	"github.com/Clodfisher/crawler_concurrent/persist"
 	"github.com/Clodfisher/crawler_concurrent/scheduler"
 	"github.com/Clodfisher/crawler_concurrent/zhenai/parser"
 )
@@ -12,6 +13,7 @@ func main() {
 		//SchedulerInterface: &scheduler.SimpleScheduler{},
 		SchedulerInterface: &scheduler.QueuedScheduler{},
 		WorkerCount:        100,
+		ItemChan:           persist.ItemSaver(),
 	}
 	//e.Run(engine.Request{
 	//	Url:        "http://www.zhenai.com/zhenghun",
