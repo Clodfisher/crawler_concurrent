@@ -1,14 +1,14 @@
 package persist
 
 import (
-	"fmt"
-	"golang.org/x/net/context"
+	"context"
+	"github.com/Clodfisher/crawler_concurrent/engine"
 	"gopkg.in/olivere/elastic.v5"
 	"log"
 )
 
-func ItemSaver() chan interface{} {
-	out := make(chan interface{})
+func ItemSaver() chan engine.Item {
+	out := make(chan engine.Item)
 	go func() {
 		itemCount := 0
 		for {
@@ -16,29 +16,35 @@ func ItemSaver() chan interface{} {
 			log.Printf("Item Save: got item #%d: %v", itemCount, item)
 			itemCount++
 
-			save(item)
+			err := save(item)
+			if err != nil {
+				log.Printf("Item Saver : error saving item %v : %v", item, err)
+			}
 		}
 	}()
 	return out
 }
 
 //有两种方式，进行elasticsearch的存储，一种是http启用rest，一种是用elasticsearch客户端
-func save(item interface{}) {
+func save(item engine.Item) error {
 	//must sniff false in docker
 	client, err := elastic.NewClient(elastic.SetURL("http://192.168.79.133:9200/"),
 		elastic.SetSniff(false))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	resp, err := client.Index().
+	indexService := client.Index().
 		Index("dating_profile").
-		Type("zhenai").
-		BodyJson(item).
-		Do(context.Background())
+		Type(item.Type).
+		BodyJson(item)
+	if item.Id != "" {
+		indexService.Id(item.Id)
+	}
+	_, err = indexService.Do(context.Background())
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	fmt.Printf("%+v", resp)
+	return nil
 }

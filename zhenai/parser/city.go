@@ -14,15 +14,16 @@ func CityParser(contents []byte) engine.ParserResult {
 	matches := profilere.FindAllSubmatch(contents, -1)
 	result := engine.ParserResult{}
 	for _, m := range matches {
+		url := string(m[1])
 		//用户的名字,item用于存储，因此只保存有用的profile数据
 		name := string(m[2])
 		//result.ItemSlice = append(result.ItemSlice, "User "+name)
 
 		//用户的最新请求
 		userRequest := engine.Request{
-			Url: string(m[1]),
+			Url: url,
 			ParserFunc: func(contents []byte) engine.ParserResult {
-				return ProfileParser(contents, name)
+				return ProfileParser(contents, url, name)
 			},
 		}
 		result.RequestSlice = append(result.RequestSlice, userRequest)

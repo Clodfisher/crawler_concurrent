@@ -77,6 +77,13 @@ get -g -v golang.org/x/net
    
 * 采用ElasticSearch快速存储、搜素、分析数据    
   为每个Item创建goroutine，提交给ItemSave，采用Docker进行ElasticSearch的安装，实现对爬取数据的快速存储、搜素、数据分析等功能。    
+  注意:对于itemsave.go中的elastic的存储客户端要根据自己的实际情况进行修改：  
+```
+elastic.NewClient(elastic.SetURL("http://192.168.79.133:9200/")
+```
+* 向item中添加url和id    
+  添加url的目的是为了可用性，添加id的目的是为了向elasticsearch存储时去重。     
+
 
    
 
@@ -102,5 +109,11 @@ gopm get -g golang.org/x/net
 
 **正则表达式的基本使用**    
 
-主要包括正则表达式的匹配，以及将匹配串中需要的子串提取出来。
+主要包括正则表达式的匹配，以及将匹配串中需要的子串提取出来。    
+
+**elastic包的使用**    
+
+对于elasticsearch的存储的存储有两种方式，第一种方式为：http启用rest，另一种为采用elasticsearch客户端，本项目采用第二种方式，支持go的第三方库[点击此处](https://www.elastic.co/guide/en/elasticsearch/client/index.html)       
+
+
 
