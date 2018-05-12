@@ -8,12 +8,19 @@ import (
 )
 
 func main() {
+	/*
+		我们配置完itemsave后，配置Scheduler、WorkerCount、ItemChan。等全部配置好后运行
+	*/
+	itemChan, err := persist.ItemSaver("dating_profile")
+	if err != nil {
+		panic(err)
+	}
 
 	e := engine.ConcurrentEngine{
 		//SchedulerInterface: &scheduler.SimpleScheduler{},
 		SchedulerInterface: &scheduler.QueuedScheduler{},
 		WorkerCount:        100,
-		ItemChan:           persist.ItemSaver(),
+		ItemChan:           itemChan,
 	}
 	e.Run(engine.Request{
 		Url:        "http://www.zhenai.com/zhenghun",

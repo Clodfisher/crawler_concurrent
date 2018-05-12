@@ -20,6 +20,8 @@ var houseRe = regexp.MustCompile(`<td><span class="label">住房条件：</span>
 var carRe = regexp.MustCompile(` <td><span class="label">是否购车：</span><span field="">([^<]+)</span></td>`)
 var xingzuo = regexp.MustCompile(`<td><span class="label">星座：</span><span field="">([^<]+)</span></td>`)
 
+var guessRe = regexp.MustCompile(`<a class="exp-user-name"[^>]*href="(http://album.zhenai.com/u/[\d]+)">([^<]+)</a>`)
+
 var idUrlRe = regexp.MustCompile(`http://album.zhenai.com/u/([\d]+)`)
 
 func ProfileParser(contents []byte, url string, name string) engine.ParserResult {
@@ -49,6 +51,16 @@ func ProfileParser(contents []byte, url string, name string) engine.ParserResult
 		},
 	}
 
+	matches := guessRe.FindAllSubmatch(contents, -1)
+	for _, m := range matches {
+		url := string(m[1])
+		name := string(m[2])
+		result.RequestSlice = append(result.RequestSlice,
+			engine.Request{
+				Url:        url,
+				ParserFunc: ParserProfile(name),
+			})
+	}
 	return result
 }
 
@@ -68,4 +80,10 @@ func extractInt(contents []byte, re *regexp.Regexp) int {
 	}
 
 	return 0
+}
+
+func ParserProfile(name string) engine.ParserFuncType {
+	return func(c []byte, url string) engine.ParserResult {
+		return ProfileParser(c, url, name)
+	}
 }

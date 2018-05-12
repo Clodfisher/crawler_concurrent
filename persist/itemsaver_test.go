@@ -31,12 +31,6 @@ func TestSave(t *testing.T) {
 		},
 	}
 
-	//Save expected item
-	err := save(expected)
-	if err != nil {
-		panic(err)
-	}
-
 	// 通过Index,Type,Id三元组，反序列化成结构体
 	// TODO:try to start up elastic search
 	// here using docker go client.
@@ -45,6 +39,14 @@ func TestSave(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
+
+	const index = "dating_test"
+	//Save expected item
+	err = save(client, index, expected)
+	if err != nil {
+		panic(err)
+	}
+
 	//Fetch saved item
 	resp, err := client.Get().
 		Index("dating_profile").

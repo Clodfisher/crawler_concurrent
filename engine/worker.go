@@ -15,7 +15,7 @@ func worker(r *Request) (ParserResult, error) {
 	}
 
 	//将网页内容text交给解析器处理
-	parserResult := r.ParserFunc(contents)
+	parserResult := r.ParserFunc(contents, r.Url)
 
 	return parserResult, nil
 }
